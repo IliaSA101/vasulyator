@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Минимальные права: workflow только читает код.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Проверяет, что gradle-wrapper.jar не подменён.
+      - uses: gradle/actions/wrapper-validation@v4
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests, lint, debug APK
+        run: ./gradlew testDebugUnitTest lintDebug assembleDebug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vasulyatr-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14

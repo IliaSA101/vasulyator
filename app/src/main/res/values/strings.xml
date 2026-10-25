@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Васюлятр</string>
+
+    <string name="result_value">= %1$d</string>
+    <string name="result_with_remainder">= %1$d, остаток %2$d</string>
+    <string name="error_division_by_zero">На ноль делить нельзя!</string>
+    <string name="error_overflow">Слишком большое число</string>
+
+    <string name="check_with_remainder">Проверка: %1$d × %2$s + %3$d = %4$s</string>
+    <string name="check_exact">Делится нацело: %1$d × %2$s = %3$s</string>
+
+    <string name="key_add">Плюс</string>
+    <string name="key_subtract">Минус</string>
+    <string name="key_multiply">Умножить</string>
+    <string name="key_divide">Разделить</string>
+    <string name="key_equals">Равно</string>
+    <string name="key_clear">Очистить</string>
+    <string name="key_backspace">Стереть</string>
+</resources>
