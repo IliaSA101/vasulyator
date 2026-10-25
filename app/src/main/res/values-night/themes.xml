@@ -1,0 +1,6 @@
+<resources>
+    <!-- Тёмное окно при запуске, чтобы не мелькал белый фон до отрисовки Compose. -->
+    <style name="Theme.Vasulyatr" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#FF121318</item>
+    </style>
+</resources>

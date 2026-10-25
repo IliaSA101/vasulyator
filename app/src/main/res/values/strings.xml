@@ -2,7 +2,7 @@
     <string name="app_name">Васюлятр</string>
 
     <string name="result_value">= %1$d</string>
-    <string name="result_with_remainder">= %1$d, остаток %2$d</string>
+    <string name="remainder">остаток %1$d</string>
     <string name="error_division_by_zero">На ноль делить нельзя!</string>
     <string name="error_overflow">Слишком большое число</string>
 

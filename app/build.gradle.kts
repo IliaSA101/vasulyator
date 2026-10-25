@@ -3,6 +3,13 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val appVersionName = "1.0"
+
+// Имя APK: vasulyatr-1.0-debug.apk / vasulyatr-1.0-release.apk вместо app-*.apk.
+base {
+    archivesName = "vasulyatr-$appVersionName"
+}
+
 android {
     namespace = "io.github.iliasa101.vasulyatr"
     compileSdk = 37
@@ -12,7 +19,7 @@ android {
         minSdk = 26
         targetSdk = 37
         versionCode = 1
-        versionName = "1.0"
+        versionName = appVersionName
     }
 
     buildTypes {
