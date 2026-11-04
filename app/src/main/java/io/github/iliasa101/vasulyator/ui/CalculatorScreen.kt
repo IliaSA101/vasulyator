@@ -1,4 +1,4 @@
-package io.github.iliasa101.vasulyatr.ui
+package io.github.iliasa101.vasulyator.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -32,12 +32,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.iliasa101.vasulyatr.R
-import io.github.iliasa101.vasulyatr.domain.CalculationResult
-import io.github.iliasa101.vasulyatr.domain.CalculatorKey
-import io.github.iliasa101.vasulyatr.domain.CalculatorState
-import io.github.iliasa101.vasulyatr.domain.Operation
-import io.github.iliasa101.vasulyatr.ui.theme.VasulyatrTheme
+import io.github.iliasa101.vasulyator.R
+import io.github.iliasa101.vasulyator.domain.CalculationResult
+import io.github.iliasa101.vasulyator.domain.CalculatorKey
+import io.github.iliasa101.vasulyator.domain.CalculatorState
+import io.github.iliasa101.vasulyator.domain.Operation
+import io.github.iliasa101.vasulyator.ui.theme.VasulyatorTheme
 
 // Моноширинные цифры: числа не «прыгают» по ширине при наборе.
 private val Digits = TextStyle(fontFeatureSettings = "tnum")
@@ -122,7 +122,7 @@ private fun ResultBlock(state: CalculatorState, result: CalculationResult) {
     }
 }
 
-/** Остаток — главное в Васюлятре, поэтому он выделен фирменным оранжевым. */
+/** Остаток — главное в Васюляторе, поэтому он выделен фирменным оранжевым. */
 @Composable
 private fun RemainderChip(remainder: Long) {
     Text(
@@ -146,14 +146,14 @@ private val Operation.symbol: String
     }
 
 private fun CalculatorState.expression(): String = buildString {
-    append(left.ifEmpty { "0" })
+    append(left.ifEmpty { "0" }.withMinusSign())
     operation?.let { append(" ${it.symbol} ").append(right) }
 }
 
 @Composable
 private fun mainText(result: CalculationResult): String = when (result) {
-    is CalculationResult.Value -> stringResource(R.string.result_value, result.value)
-    is CalculationResult.QuotientWithRemainder -> stringResource(R.string.result_value, result.quotient)
+    is CalculationResult.Value -> stringResource(R.string.result_value, result.value.withMinusSign())
+    is CalculationResult.QuotientWithRemainder -> stringResource(R.string.result_value, result.quotient.withMinusSign())
     CalculationResult.DivisionByZero -> stringResource(R.string.error_division_by_zero)
     CalculationResult.Overflow -> stringResource(R.string.error_overflow)
 }
@@ -162,10 +162,21 @@ private fun mainText(result: CalculationResult): String = when (result) {
 @Composable
 private fun checkText(state: CalculatorState, result: CalculationResult.QuotientWithRemainder): String =
     if (result.remainder == 0L) {
-        stringResource(R.string.check_exact, result.quotient, state.right, state.left)
+        stringResource(R.string.check_exact, result.quotient.withMinusSign(), state.right, state.left.withMinusSign())
     } else {
-        stringResource(R.string.check_with_remainder, result.quotient, state.right, result.remainder, state.left)
+        stringResource(
+            R.string.check_with_remainder,
+            result.quotient.withMinusSign(),
+            state.right,
+            result.remainder,
+            state.left.withMinusSign(),
+        )
     }
+
+// Типографский минус «−», как на кнопке, вместо дефиса из Long.toString().
+private fun String.withMinusSign(): String = replace('-', '−')
+
+private fun Long.withMinusSign(): String = toString().withMinusSign()
 
 private enum class KeyStyle { DIGIT, OPERATOR, CLEAR, EQUALS }
 
@@ -257,7 +268,7 @@ private fun KeyButton(spec: KeySpec, onKey: (CalculatorKey) -> Unit, modifier: M
 @Preview(name = "Светлая", showBackground = true, widthDp = 393, heightDp = 851)
 @Composable
 private fun CalculatorScreenLightPreview() {
-    VasulyatrTheme(darkTheme = false) {
+    VasulyatorTheme(darkTheme = false) {
         Box(Modifier.background(MaterialTheme.colorScheme.background)) {
             CalculatorScreen(
                 state = CalculatorState(left = "10", operation = Operation.DIVIDE, right = "3", isEvaluated = true),
@@ -270,7 +281,7 @@ private fun CalculatorScreenLightPreview() {
 @Preview(name = "Тёмная", showBackground = true, widthDp = 393, heightDp = 851)
 @Composable
 private fun CalculatorScreenDarkPreview() {
-    VasulyatrTheme(darkTheme = true) {
+    VasulyatorTheme(darkTheme = true) {
         Box(Modifier.background(MaterialTheme.colorScheme.background)) {
             CalculatorScreen(state = CalculatorState(left = "125", operation = Operation.MULTIPLY), onKey = {})
         }

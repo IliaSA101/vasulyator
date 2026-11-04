@@ -1,4 +1,4 @@
-package io.github.iliasa101.vasulyatr.ui.theme
+package io.github.iliasa101.vasulyator.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +49,6 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun VasulyatrTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun VasulyatorTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = if (darkTheme) DarkColors else LightColors, content = content)
 }

@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
         with:
@@ -32,11 +32,29 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v6
 
-      - name: Unit tests, lint, debug APK
-        run: ./gradlew testDebugUnitTest lintDebug assembleDebug
+      # Release собирается всегда, чтобы поломка R8 всплывала на пуше, а не в день выпуска.
+      # С секретами (push в репозиторий) APK подписывается релизным ключом;
+      # без них (PR от Dependabot и форков) — только проверочная неподписанная сборка.
+      - name: Tests, lint, debug and release APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.VASULYATOR_KEYSTORE_BASE64 }}
+          VASULYATOR_KEYSTORE_PASSWORD: ${{ secrets.VASULYATOR_KEYSTORE_PASSWORD }}
+          VASULYATOR_KEY_ALIAS: ${{ secrets.VASULYATOR_KEY_ALIAS }}
+          VASULYATOR_KEY_PASSWORD: ${{ secrets.VASULYATOR_KEY_PASSWORD }}
+        run: |
+          tasks="testDebugUnitTest lintDebug lintRelease assembleDebug assembleRelease"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            keystore="$RUNNER_TEMP/release.jks"
+            echo "$KEYSTORE_BASE64" | base64 --decode > "$keystore"
+            VASULYATOR_KEYSTORE_FILE="$keystore" ./gradlew $tasks
+            rm -f "$keystore"
+          else
+            echo "::notice::Signing secrets are not available — release APK is built unsigned, for verification only."
+            ./gradlew $tasks -PallowUnsignedRelease=true
+          fi
 
       - uses: actions/upload-artifact@v7
         with:
-          name: vasulyatr-debug-apk
-          path: app/build/outputs/apk/debug/vasulyatr-*-debug.apk
+          name: vasulyator-apk
+          path: app/build/outputs/apk/*/vasulyator-*.apk
           retention-days: 14

@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Vasulyatr"
+rootProject.name = "Vasulyator"
 include(":app")

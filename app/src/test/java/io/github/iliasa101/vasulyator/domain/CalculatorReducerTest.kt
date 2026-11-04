@@ -1,7 +1,7 @@
-package io.github.iliasa101.vasulyatr.domain
+package io.github.iliasa101.vasulyator.domain
 
-import io.github.iliasa101.vasulyatr.domain.CalculationResult.QuotientWithRemainder
-import io.github.iliasa101.vasulyatr.domain.CalculationResult.Value
+import io.github.iliasa101.vasulyator.domain.CalculationResult.QuotientWithRemainder
+import io.github.iliasa101.vasulyator.domain.CalculationResult.Value
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
