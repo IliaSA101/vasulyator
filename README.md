@@ -1,6 +1,6 @@
-<img src="design/icon-512.png" width="96" alt="Иконка Васюлятра" align="right">
+<img src="design/icon-512.png" width="96" alt="Иконка Васюлятора" align="right">
 
-# Васюлятр
+# Васюлятор
 
 Калькулятор для ребёнка, который делит **с остатком**, как учат в школе:
 
@@ -9,7 +9,7 @@
 Проверка: 3 × 3 + 1 = 10
 ```
 
-Обычный калькулятор покажет `3,3333333`, а Васюлятр — неполное частное и остаток,
+Обычный калькулятор покажет `3,3333333`, а Васюлятор — неполное частное и остаток,
 плюс строку-проверку, по которой ребёнок сам убедится, что ответ верный.
 Сложение, вычитание и умножение тоже есть; все числа целые.
 
@@ -19,7 +19,20 @@
 - Понятные сообщения вместо ошибок: «На ноль делить нельзя!», «Слишком большое число».
 - Крупные кнопки, подписи для TalkBack, светлая и тёмная тема по настройке телефона.
 - Состояние сохраняется при повороте экрана и после выгрузки приложения из памяти.
-- Никаких разрешений, сети, рекламы и сбора данных.
+- Не запрашивает у пользователя никаких разрешений; нет сети, рекламы и сбора данных.
+  (В манифесте есть только служебное подписное разрешение
+  `…DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, которое AndroidX добавляет сам
+  для своих внутренних приёмников: оно не показывается при установке и ничего не даёт приложению.)
+
+## Установка
+
+Скачайте `vasulyator-<версия>-release.apk` со страницы
+[последнего выпуска](https://github.com/IliaSA101/vasulyator/releases/latest) и откройте на телефоне
+(Android 8.0+). Система попросит разрешить установку из этого источника.
+
+> Версия 1.0 называлась «Васюлятр» (`io.github.iliasa101.vasulyatr`) и была подписана отладочным ключом.
+> С 1.1 у приложения новое имя пакета и релизная подпись, поэтому 1.1 ставится **рядом**,
+> а не поверх: старую версию удалите вручную.
 
 ## Архитектура
 
@@ -46,7 +59,7 @@ CalculatorScreen ──CalculatorKey──▶ CalculatorViewModel ──▶ Calc
 ```bash
 ./gradlew testDebugUnitTest   # юнит-тесты, меньше секунды
 ./gradlew lintDebug           # статический анализ
-./gradlew assembleDebug       # app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleDebug       # app/build/outputs/apk/debug/vasulyator-<версия>-debug.apk
 ```
 
 ### Установка на телефон
@@ -59,9 +72,28 @@ CalculatorScreen ──CalculatorKey──▶ CalculatorViewModel ──▶ Calc
 
 ### Релизная сборка
 
-`assembleRelease` собирает APK с R8 (минификация и удаление неиспользуемых ресурсов).
-Ключ подписи хранится только локально: `*.jks`, `*.keystore` и `keystore.properties`
-исключены через `.gitignore`.
+`assembleRelease` собирает APK с R8 (минификация и удаление неиспользуемых ресурсов)
+и подписывает его релизным ключом. Ключ и пароли в репозиторий не попадают
+(`*.jks`, `*.keystore`, `keystore.properties` — в `.gitignore`). Источник ключа:
+
+1. **Локально** — файл `keystore.properties` в корне проекта:
+   ```properties
+   storeFile=D:/путь/к/vasulyator-release.jks
+   storePassword=…
+   keyAlias=vasulyator
+   keyPassword=…
+   ```
+2. **В CI** — GitHub Secrets `VASULYATOR_KEYSTORE_BASE64` (keystore в base64),
+   `VASULYATOR_KEYSTORE_PASSWORD`, `VASULYATOR_KEY_ALIAS`, `VASULYATOR_KEY_PASSWORD`.
+
+Если ключа нет, `assembleRelease` **падает** с подсказкой, а не выдаёт молча неподписанный APK.
+Для проверочной сборки без ключа (так CI собирает PR от Dependabot):
+`./gradlew assembleRelease -PallowUnsignedRelease=true`.
+
+Ключ терять нельзя: без него невозможно выпустить обновление, которое встанет поверх
+установленного приложения. Держите резервную копию `.jks` и паролей отдельно от компьютера.
+
+Свои правила R8 — в [app/proguard-rules.pro](app/proguard-rules.pro).
 
 ## Иконка
 
@@ -74,8 +106,9 @@ CalculatorScreen ──CalculatorKey──▶ CalculatorViewModel ──▶ Calc
 Kotlin 2.4 · Jetpack Compose (Material 3) · AndroidX Lifecycle · AGP 9.4 · Gradle 9.8 ·
 minSdk 26 / targetSdk 37.
 
-CI (GitHub Actions) на каждый push и PR проверяет `gradle-wrapper.jar`, гоняет тесты
-и lint и собирает debug APK. Dependabot раз в месяц предлагает обновления зависимостей.
+CI (GitHub Actions) на каждый push и PR проверяет `gradle-wrapper.jar`, гоняет тесты,
+lint для debug и release и собирает оба APK (release — с R8, подписанный, если доступны секреты).
+Dependabot раз в месяц предлагает обновления зависимостей.
 
 ## Ветки
 
