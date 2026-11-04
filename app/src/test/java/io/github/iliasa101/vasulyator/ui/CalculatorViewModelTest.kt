@@ -1,9 +1,9 @@
-package io.github.iliasa101.vasulyatr.ui
+package io.github.iliasa101.vasulyator.ui
 
 import androidx.lifecycle.SavedStateHandle
-import io.github.iliasa101.vasulyatr.domain.CalculationResult
-import io.github.iliasa101.vasulyatr.domain.CalculatorKey
-import io.github.iliasa101.vasulyatr.domain.Operation
+import io.github.iliasa101.vasulyator.domain.CalculationResult
+import io.github.iliasa101.vasulyator.domain.CalculatorKey
+import io.github.iliasa101.vasulyator.domain.Operation
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

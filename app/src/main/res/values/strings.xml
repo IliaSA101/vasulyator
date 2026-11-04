@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">Васюлятр</string>
+    <string name="app_name">Васюлятор</string>
 
-    <string name="result_value">= %1$d</string>
+    <string name="result_value">= %1$s</string>
     <string name="remainder">остаток %1$d</string>
     <string name="error_division_by_zero">На ноль делить нельзя!</string>
     <string name="error_overflow">Слишком большое число</string>
 
-    <string name="check_with_remainder">Проверка: %1$d × %2$s + %3$d = %4$s</string>
-    <string name="check_exact">Делится нацело: %1$d × %2$s = %3$s</string>
+    <string name="check_with_remainder">Проверка: %1$s × %2$s + %3$d = %4$s</string>
+    <string name="check_exact">Делится нацело: %1$s × %2$s = %3$s</string>
 
     <string name="key_add">Плюс</string>
     <string name="key_subtract">Минус</string>

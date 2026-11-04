@@ -1,11 +1,11 @@
-package io.github.iliasa101.vasulyatr.ui
+package io.github.iliasa101.vasulyator.ui
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import io.github.iliasa101.vasulyatr.domain.CalculatorKey
-import io.github.iliasa101.vasulyatr.domain.CalculatorReducer
-import io.github.iliasa101.vasulyatr.domain.CalculatorState
-import io.github.iliasa101.vasulyatr.domain.Operation
+import io.github.iliasa101.vasulyator.domain.CalculatorKey
+import io.github.iliasa101.vasulyator.domain.CalculatorReducer
+import io.github.iliasa101.vasulyator.domain.CalculatorState
+import io.github.iliasa101.vasulyator.domain.Operation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

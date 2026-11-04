@@ -1,4 +1,4 @@
-package io.github.iliasa101.vasulyatr.domain
+package io.github.iliasa101.vasulyator.domain
 
 enum class Operation { ADD, SUBTRACT, MULTIPLY, DIVIDE }
 

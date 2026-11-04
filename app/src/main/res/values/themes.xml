@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.Vasulyatr" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.Vasulyator" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">#FFF4F5FA</item>
     </style>
 </resources>

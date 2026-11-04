@@ -1,4 +1,4 @@
-package io.github.iliasa101.vasulyatr
+package io.github.iliasa101.vasulyator
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,16 +11,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.github.iliasa101.vasulyatr.ui.CalculatorScreen
-import io.github.iliasa101.vasulyatr.ui.CalculatorViewModel
-import io.github.iliasa101.vasulyatr.ui.theme.VasulyatrTheme
+import io.github.iliasa101.vasulyator.ui.CalculatorScreen
+import io.github.iliasa101.vasulyator.ui.CalculatorViewModel
+import io.github.iliasa101.vasulyator.ui.theme.VasulyatorTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            VasulyatrTheme {
+            VasulyatorTheme {
                 Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val viewModel: CalculatorViewModel = viewModel()
                     val state by viewModel.state.collectAsStateWithLifecycle()
